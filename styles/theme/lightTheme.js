@@ -4,6 +4,10 @@ const lightTheme = createTheme({
   palette: {
     mode: 'light',
   },
+  typography:{
+      fontFamily:"Roboto"
+  }
+
 });
 
 export default lightTheme;

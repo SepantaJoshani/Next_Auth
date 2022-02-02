@@ -1,23 +1,57 @@
-import * as React from 'react';
-import AppBar from '@mui/material/AppBar';
-import Box from '@mui/material/Box';
-import Toolbar from '@mui/material/Toolbar';
-import IconButton from '@mui/material/IconButton';
-import Typography from '@mui/material/Typography';
-import Menu from '@mui/material/Menu';
-import MenuIcon from '@mui/icons-material/Menu';
-import Container from '@mui/material/Container';
-import Avatar from '@mui/material/Avatar';
-import Button from '@mui/material/Button';
-import Tooltip from '@mui/material/Tooltip';
-import MenuItem from '@mui/material/MenuItem';
+import * as React from "react";
+import AppBar from "@mui/material/AppBar";
+import Box from "@mui/material/Box";
+import Toolbar from "@mui/material/Toolbar";
 
-const pages = ['Products', 'Pricing', 'Blog'];
-const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
+import Typography from "@mui/material/Typography";
+
+import MenuIcon from "@mui/icons-material/Menu";
+import Container from "@mui/material/Container";
+
+import { NextLinkComposed } from "./link/mui-link";
+import Tabs from "@mui/material/Tabs";
+import Tab from "@mui/material/Tab";
+import Grid from "@mui/material/Grid";
+import { Hidden, useMediaQuery } from "@mui/material";
+import { useTheme } from "@mui/system";
+import List from "@mui/material/List";
+import ListItem from "@mui/material/ListItem";
+import SwipeableDrawer from "@mui/material/SwipeableDrawer";
+
+const routes = [
+  {
+    name: "Home",
+    link: "/",
+    activeIndex: 0,
+  },
+  {
+    name: "Register",
+    link: "/register",
+    activeIndex: 1,
+  },
+  {
+    name: "Login",
+    link: "/login",
+    activeIndex: 2,
+  },
+];
 
 const Header = () => {
+  const [isDrawerOpen, setIsDrawerOpen] = React.useState(false);
+  const [value, setValue] = React.useState(0);
+  const theme = useTheme();
   const [anchorElNav, setAnchorElNav] = React.useState(null);
   const [anchorElUser, setAnchorElUser] = React.useState(null);
+
+  const mdDown = useMediaQuery(theme.breakpoints.down("md"));
+
+  const iOS =
+    typeof navigator !== "undefined" &&
+    /iPad|iPhone|iPod/.test(navigator.userAgent);
+
+  const handleCloseNavMenu = () => {
+    setAnchorElNav(null);
+  };
 
   const handleOpenNavMenu = (event) => {
     setAnchorElNav(event.currentTarget);
@@ -26,115 +60,112 @@ const Header = () => {
     setAnchorElUser(event.currentTarget);
   };
 
-  const handleCloseNavMenu = () => {
-    setAnchorElNav(null);
-  };
-
   const handleCloseUserMenu = () => {
     setAnchorElUser(null);
   };
 
+  const handleChange = (event, newValue) => {
+    setValue(newValue);
+  };
+
+  const path = typeof window !== "undefined" && window.location.pathname;
+
+  React.useEffect(() => {
+    const currentTab = routes.find((route) => route.link === path);
+
+    if (!currentTab) {
+      setValue(false);
+    } else {
+      setValue(currentTab.activeIndex);
+    }
+  }, [path]);
+
   return (
-    <AppBar position="static">
-      <Container maxWidth="xl">
-        <Toolbar disableGutters>
-          <Typography
-            variant="h6"
-            noWrap
-            component="div"
-            sx={{ mr: 2, display: { xs: 'none', md: 'flex' } }}
-          >
-            LOGO
-          </Typography>
+    <>
+      <AppBar position="fixed">
+        <Container maxWidth="xl">
+          <Toolbar disableGutters>
+            <Grid container direction={mdDown ? "column" : "row"}>
+              <Grid md={7} xl={8} item>
+                <Typography variant={mdDown ? "h5" : "h4"}>
+                  Next-Auth
+                </Typography>
+              </Grid>
+              <Hidden mdDown>
+                <Grid item>
+                  <Tabs
+                    orientation={mdDown ? "vertical" : "horizontal"}
+                    TabIndicatorProps={{ style: { display: "none" } }}
+                    value={value}
+                    onChange={handleChange}
+                    aria-label="tabs navigation"
+                  >
+                    {routes.map((router) => (
+                      <Tab
+                        value={router.activeIndex}
+                        key={router.activeIndex}
+                        label={router.name}
+                        onClick={handleCloseNavMenu}
+                        sx={{
+                          mr: "auto",
+                          color: "white",
+                          display: "block",
 
-          <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}>
-            <IconButton
-              size="large"
-              aria-label="account of current user"
-              aria-controls="menu-appbar"
-              aria-haspopup="true"
-              onClick={handleOpenNavMenu}
-              color="inherit"
+                          "&.Mui-selected": {
+                            border: "2px solid #fff",
+                            color: "#fff",
+                            borderRadius: 5,
+                          },
+                          paddingX: {
+                            xs: 4,
+                            xl: 6,
+                          },
+                        }}
+                        component={NextLinkComposed}
+                        to={router.link}
+                      />
+                    ))}
+                  </Tabs>
+                </Grid>
+              </Hidden>
+            </Grid>
+          </Toolbar>
+        </Container>
+        <Box
+          onClick={() => setIsDrawerOpen((prev) => !prev)}
+          sx={{
+            position: "absolute",
+            top: 10,
+            right: 10,
+            display: mdDown ? "block" : "none",
+          }}
+        >
+          <MenuIcon />
+        </Box>
+      </AppBar>
+      <Toolbar />
+      <SwipeableDrawer
+        anchor="left"
+        open={isDrawerOpen}
+        onClose={() => setIsDrawerOpen(false)}
+        onOpen={() => setIsDrawerOpen(true)}
+      >
+        <List>
+          {routes.map((route) => (
+            <ListItem
+              onClick={() => setIsDrawerOpen(false)}
+              key={route.activeIndex}
+              component={NextLinkComposed}
+              to={route.link}
+              value={route.activeIndex}
+              sx={{ px: 5, py: 2 }}
             >
-              <MenuIcon />
-            </IconButton>
-            <Menu
-              id="menu-appbar"
-              anchorEl={anchorElNav}
-              anchorOrigin={{
-                vertical: 'bottom',
-                horizontal: 'left',
-              }}
-              keepMounted
-              transformOrigin={{
-                vertical: 'top',
-                horizontal: 'left',
-              }}
-              open={Boolean(anchorElNav)}
-              onClose={handleCloseNavMenu}
-              sx={{
-                display: { xs: 'block', md: 'none' },
-              }}
-            >
-              {pages.map((page) => (
-                <MenuItem key={page} onClick={handleCloseNavMenu}>
-                  <Typography textAlign="center">{page}</Typography>
-                </MenuItem>
-              ))}
-            </Menu>
-          </Box>
-          <Typography
-            variant="h6"
-            noWrap
-            component="div"
-            sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}
-          >
-            LOGO
-          </Typography>
-          <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
-            {pages.map((page) => (
-              <Button
-                key={page}
-                onClick={handleCloseNavMenu}
-                sx={{ my: 2, color: 'white', display: 'block' }}
-              >
-                {page}
-              </Button>
-            ))}
-          </Box>
-
-          <Box sx={{ flexGrow: 0 }}>
-            <Tooltip title="Open settings">
-              <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                <Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg" />
-              </IconButton>
-            </Tooltip>
-            <Menu
-              sx={{ mt: '45px' }}
-              id="menu-appbar"
-              anchorEl={anchorElUser}
-              anchorOrigin={{
-                vertical: 'top',
-                horizontal: 'right',
-              }}
-              keepMounted
-              transformOrigin={{
-                vertical: 'top',
-                horizontal: 'right',
-              }}
-              open={Boolean(anchorElUser)}
-              onClose={handleCloseUserMenu}
-            >
-              {settings.map((setting) => (
-                <MenuItem key={setting} onClick={handleCloseUserMenu}>
-                  <Typography textAlign="center">{setting}</Typography>
-                </MenuItem>
-              ))}
-            </Menu>
-          </Box>
-        </Toolbar>
-      </Container>
-    </AppBar>
+              {route.name}
+            </ListItem>
+          ))}
+        </List>
+      </SwipeableDrawer>
+    </>
   );
 };
 export default Header;

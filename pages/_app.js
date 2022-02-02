@@ -1,8 +1,8 @@
 import "../styles/globals.css";
-import PropTypes from 'prop-types';
+import PropTypes from "prop-types";
 import { SessionProvider } from "next-auth/react";
 import { CacheProvider } from "@emotion/react";
-import { ThemeProvider, CssBaseline } from "@mui/material";
+import { ThemeProvider, CssBaseline, Paper } from "@mui/material";
 import createEmotionCache from "../utility/createEmotionCache";
 import lightTheme from "../styles/theme/lightTheme";
 import Header from "../components/layout/header";
@@ -20,13 +20,14 @@ export function App({
         <CssBaseline />
         <SessionProvider session={session}>
           <Header />
-          <Component {...pageProps} />
+          <Paper elevation={0} sx={{ marginTop: "2rem", paddingLeft: "2rem" }}>
+            <Component {...pageProps} />
+          </Paper>
         </SessionProvider>
       </ThemeProvider>
     </CacheProvider>
   );
 }
-
 
 export default App;
 
