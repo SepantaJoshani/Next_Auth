@@ -6,6 +6,7 @@ import { ThemeProvider, CssBaseline, Paper } from "@mui/material";
 import createEmotionCache from "../utility/createEmotionCache";
 import lightTheme from "../styles/theme/lightTheme";
 import Header from "../components/layout/header";
+import AlertContextProvider from "../context/alert-context";
 
 const clientSideEmotionCache = createEmotionCache();
 
@@ -15,17 +16,23 @@ export function App({
   pageProps: { session, ...pageProps },
 }) {
   return (
-    <CacheProvider value={emotionCache}>
-      <ThemeProvider theme={lightTheme}>
-        <CssBaseline />
-        <SessionProvider session={session}>
-          <Header />
-          <Paper elevation={0} sx={{ marginTop: "2rem", paddingLeft: "2rem" }}>
-            <Component {...pageProps} />
-          </Paper>
-        </SessionProvider>
-      </ThemeProvider>
-    </CacheProvider>
+    <>
+      <CacheProvider value={emotionCache}>
+        <ThemeProvider theme={lightTheme}>
+          <SessionProvider session={session}>
+            <AlertContextProvider>
+              <Header />
+              <Paper
+                elevation={0}
+                sx={{ marginTop: "2rem", paddingLeft: "2rem" }}
+              >
+                <Component {...pageProps} />
+              </Paper>
+            </AlertContextProvider>
+          </SessionProvider>
+        </ThemeProvider>
+      </CacheProvider>
+    </>
   );
 }
 

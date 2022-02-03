@@ -11,8 +11,8 @@ const handler = async (req, res) => {
       const existingUser = await User.findOne({ email: email });
 
       if (existingUser) {
-        res.status(422).json({ message: "USer already exists" });
-        
+        res.status(422).json({ message: "User already exists" });
+
         return;
       }
 
@@ -26,7 +26,7 @@ const handler = async (req, res) => {
     }
   } catch (error) {
     console.log(error);
-    res.status(422).json({message:"Invalid mail type idiot"})
+    res.status(422).json({ message: "Invalid mail type " });
   }
 };
 

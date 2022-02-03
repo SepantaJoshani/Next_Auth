@@ -4,7 +4,7 @@ import Box from "@mui/material/Box";
 import Toolbar from "@mui/material/Toolbar";
 
 import Typography from "@mui/material/Typography";
-
+import { useRouter } from "next/router";
 import MenuIcon from "@mui/icons-material/Menu";
 import Container from "@mui/material/Container";
 
@@ -37,6 +37,7 @@ const routes = [
 ];
 
 const Header = () => {
+  const router = useRouter();
   const [isDrawerOpen, setIsDrawerOpen] = React.useState(false);
   const [value, setValue] = React.useState(0);
   const theme = useTheme();
@@ -85,8 +86,14 @@ const Header = () => {
       <AppBar position="fixed">
         <Container maxWidth="xl">
           <Toolbar disableGutters>
-            <Grid container direction={mdDown ? "column" : "row"}>
-              <Grid md={7} xl={8} item>
+            <Grid container sx direction={mdDown ? "column" : "row"}>
+              <Grid
+                md={7}
+                xl={8}
+                sx={{ cursor: "pointer" }}
+                item
+                onClick={() => router.push("/")}
+              >
                 <Typography variant={mdDown ? "h5" : "h4"}>
                   Next-Auth
                 </Typography>
@@ -135,36 +142,45 @@ const Header = () => {
           onClick={() => setIsDrawerOpen((prev) => !prev)}
           sx={{
             position: "absolute",
-            top: 10,
+            top: 12,
             right: 10,
             display: mdDown ? "block" : "none",
           }}
         >
-          <MenuIcon />
+          <MenuIcon sx={{ fontSize: "2rem" }} />
         </Box>
       </AppBar>
       <Toolbar />
-      <SwipeableDrawer
-        anchor="left"
-        open={isDrawerOpen}
-        onClose={() => setIsDrawerOpen(false)}
-        onOpen={() => setIsDrawerOpen(true)}
-      >
-        <List>
-          {routes.map((route) => (
-            <ListItem
-              onClick={() => setIsDrawerOpen(false)}
-              key={route.activeIndex}
-              component={NextLinkComposed}
-              to={route.link}
-              value={route.activeIndex}
-              sx={{ px: 5, py: 2 }}
-            >
-              {route.name}
-            </ListItem>
-          ))}
-        </List>
-      </SwipeableDrawer>
+      <Hidden mdUp>
+        <SwipeableDrawer
+          anchor="left"
+          open={isDrawerOpen}
+          onClose={() => setIsDrawerOpen(false)}
+          onOpen={() => setIsDrawerOpen(true)}
+        >
+          <List>
+            {routes.map((route) => (
+              <ListItem
+                onClick={() => setIsDrawerOpen(false)}
+                key={route.activeIndex}
+                component={NextLinkComposed}
+                to={route.link}
+                value={route.activeIndex}
+                sx={{
+                  px: 5,
+                  py: 2,
+                  borderBottom: "1px solid white",
+                  ":hover": {
+                    opacity: 0.5,
+                  },
+                }}
+              >
+                {route.name}
+              </ListItem>
+            ))}
+          </List>
+        </SwipeableDrawer>
+      </Hidden>
     </>
   );
 };
