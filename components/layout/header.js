@@ -98,7 +98,7 @@ const Header = () => {
           <Toolbar disableGutters>
             <Grid container direction={mdDown ? "column" : "row"}>
               <Grid md={7} xl={8} item>
-                <Typography variant={mdDown ? "h5" : "h4"}>
+                <Typography sx={{fontWeight:500}} variant={mdDown ? "h5" : "h4"}>
                   Next-Auth
                 </Typography>
               </Grid>

@@ -7,8 +7,8 @@ import { Router, useRouter } from "next/router";
 
 export default function Component() {
   const { data: session } = useSession();
-  console.log(session);
-const router = useRouter();
+
+  const router = useRouter();
 
   return (
     <Grid
@@ -19,7 +19,17 @@ const router = useRouter();
       sx={{ height: "70vh" }}
     >
       <Grid item>
-        <Paper elevation={3} style={{ padding: 0 }} variant="elevation">
+        <Paper
+          elevation={3}
+          style={{ padding: 0 }}
+          sx={{
+            width: {
+              sm: 400,
+              md: 500,
+            },
+          }}
+          variant="elevation"
+        >
           <Grid item container alignItems="center" direction="column">
             <Grid
               item
@@ -34,6 +44,7 @@ const router = useRouter();
                   sm: "3rem",
                   md: "4rem",
                 },
+                mt: "1rem",
               }}
             >
               <Typography variant="h3" sx={{ fontWeight: "bold" }}>
@@ -50,7 +61,9 @@ const router = useRouter();
               }}
             >
               {session && (
-                <Typography align="center" variant="h6">Hi dear {session.user.name ||session.user.email} </Typography>
+                <Typography align="center" variant="h6">
+                  Hi dear {session.user.name || session.user.email}{" "}
+                </Typography>
               )}
               {!session && (
                 <Typography align="center" variant="h6">
@@ -70,7 +83,7 @@ const router = useRouter();
                 }}
                 onClick={() => {
                   if (!session) {
-                    router.push('/login');
+                    router.push("/login");
                   } else {
                     signOut();
                   }
