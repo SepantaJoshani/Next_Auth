@@ -16,7 +16,7 @@ import GoogleButton from "react-google-button";
 import { getSession, signIn } from "next-auth/react";
 import { useFormik } from "formik";
 import * as Yup from "yup";
-import axios from "axios";
+
 import AlertSnack from "../components/alert-snack/alert-snack";
 import { AlertContext } from "../context/alert-context";
 import { useRouter } from "next/router";
@@ -168,9 +168,7 @@ function SignIn() {
             />
             <GithubButton
               style={{ width: "100%", marginTop: "1rem" }}
-              onClick={async() =>await signIn("github",{
-                redirect:'false'
-              })}
+              onClick={() => signIn("github")}
             />
             <Grid
               container

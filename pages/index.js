@@ -50,10 +50,10 @@ const router = useRouter();
               }}
             >
               {session && (
-                <Typography variant="h6">Hi dear {session.user.name ||session.user.email} </Typography>
+                <Typography align="center" variant="h6">Hi dear {session.user.name ||session.user.email} </Typography>
               )}
               {!session && (
-                <Typography variant="h6">
+                <Typography align="center" variant="h6">
                   Hi Stranger , Please Sign in{" "}
                 </Typography>
               )}

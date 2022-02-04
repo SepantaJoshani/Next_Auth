@@ -1,12 +1,14 @@
 import { compare, hash } from "bcryptjs";
 import { MongoClient } from "mongodb";
+import { getSession } from "next-auth/react";
+
 
 
 const handler = async (req, res) => {
-  if (req.method !== "PATCH") {
+  if (req.method !== "PUT") {
     return;
   }
-if(req.method==="PATCH"){
+if(req.method==="PUT"){
     const { oldPassword, newPassword } = req.body;
 
   const session =await getSession({ req: req });
@@ -39,7 +41,7 @@ if(req.method==="PATCH"){
     return;
   }
 
-  const hashedPass = await hash(newPassword);
+  const hashedPass = await hash(newPassword,12);
 
   const result = await usersCollection.updateOne(
     { email: userEmail },
