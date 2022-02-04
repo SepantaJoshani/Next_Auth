@@ -3,11 +3,12 @@ import Button from "@mui/material/Button";
 import { useSession, signIn, signOut } from "next-auth/react";
 import Paper from "@mui/material/Paper";
 import { Typography } from "@mui/material";
+import { Router, useRouter } from "next/router";
 
 export default function Component() {
   const { data: session } = useSession();
   console.log(session);
-
+const router = useRouter();
 
   return (
     <Grid
@@ -69,7 +70,7 @@ export default function Component() {
                 }}
                 onClick={() => {
                   if (!session) {
-                    signIn("google");
+                    router.push('/login');
                   } else {
                     signOut();
                   }

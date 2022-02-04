@@ -8,14 +8,21 @@ import Credentials from "next-auth/providers/credentials";
 
 export default NextAuth({
   adapter: MongoDBAdapter(clientPromise),
-  session:{
-    strategy:"jwt"
-  } ,
+  session: {
+    strategy: "jwt",
+  },
   secret: process.env.SECRET,
   providers: [
     GoogleProvider({
       clientId: process.env.GOOGLE_ID,
       clientSecret: process.env.GOOGLE_SECRET,
+      authorization: {
+        params: {
+          prompt: "consent",
+          access_type: "offline",
+          response_type: "code",
+        },
+      },
     }),
     Credentials({
       authorize: async (credentials) => {

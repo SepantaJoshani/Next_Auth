@@ -15,6 +15,7 @@ import * as Yup from "yup";
 import axios from "axios";
 import AlertSnack from "../components/alert-snack/alert-snack";
 import { AlertContext } from "../context/alert-context";
+import CircularProgress from "@mui/material/CircularProgress";
 
 function Copyright(props) {
   return (
@@ -38,20 +39,17 @@ function Copyright(props) {
   );
 }
 
-const theme = createTheme();
-
-export default function SignUp() {
+ function SignUp() {
   const alertCtx = React.useContext(AlertContext);
   const {
     open,
     closeHandler,
+    successHandler,
     message,
     backgroundColor,
     severity,
     errorHandler,
   } = alertCtx;
-
-  
 
   const validationSchema = Yup.object({
     firstName: Yup.string().required("Required"),
@@ -193,7 +191,7 @@ export default function SignUp() {
             sx={{ mt: 3, mb: 2 }}
             disabled={!formik.isValid}
           >
-            Sign Up
+            {formik.isSubmitting ? <CircularProgress color="secondary" /> : "Sign up"}
           </Button>
           <Grid container justifyContent="flex-end">
             <Grid item>
@@ -216,3 +214,6 @@ export default function SignUp() {
     </Container>
   );
 }
+
+
+export default SignUp;

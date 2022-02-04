@@ -17,24 +17,7 @@ import { useTheme } from "@mui/system";
 import List from "@mui/material/List";
 import ListItem from "@mui/material/ListItem";
 import SwipeableDrawer from "@mui/material/SwipeableDrawer";
-
-const routes = [
-  {
-    name: "Home",
-    link: "/",
-    activeIndex: 0,
-  },
-  {
-    name: "Register",
-    link: "/register",
-    activeIndex: 1,
-  },
-  {
-    name: "Login",
-    link: "/login",
-    activeIndex: 2,
-  },
-];
+import { useSession } from "next-auth/react";
 
 const Header = () => {
   const router = useRouter();
@@ -43,8 +26,35 @@ const Header = () => {
   const theme = useTheme();
   const [anchorElNav, setAnchorElNav] = React.useState(null);
   const [anchorElUser, setAnchorElUser] = React.useState(null);
-
+  const { data: session } = useSession();
   const mdDown = useMediaQuery(theme.breakpoints.down("md"));
+
+  const routes = React.useMemo(() => {
+    const routes = [
+      {
+        name: "Home",
+        link: "/",
+        activeIndex: 0,
+      },
+      {
+        name: "Register",
+        link: "/register",
+        activeIndex: 1,
+      },
+      !session
+        ? {
+            name: "Login",
+            link: "/login",
+            activeIndex: 2,
+          }
+        : {
+            name: "Profile",
+            link: "/profile",
+            activeIndex: 2,
+          },
+    ];
+    return routes;
+  }, [session]);
 
   const iOS =
     typeof navigator !== "undefined" &&
@@ -87,13 +97,7 @@ const Header = () => {
         <Container maxWidth="xl">
           <Toolbar disableGutters>
             <Grid container sx direction={mdDown ? "column" : "row"}>
-              <Grid
-                md={7}
-                xl={8}
-                sx={{ cursor: "pointer" }}
-                item
-                onClick={() => router.push("/")}
-              >
+              <Grid md={7} xl={8} item>
                 <Typography variant={mdDown ? "h5" : "h4"}>
                   Next-Auth
                 </Typography>
