@@ -36,12 +36,12 @@ const AlertSnack = ({
       <Alert
         onClose={onClose}
         severity={severity}
-        sx={{
-          width: {
-            xs: "100%",
-            sm: "300px",
-          },
-        }}
+        // sx={{
+        //   width: {
+        //     xs: "100%",
+        //     sm: "300px",
+        //   },
+        // }}
       >
         {alertMessage}
       </Alert>
