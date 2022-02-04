@@ -52,6 +52,7 @@ const Profile = () => {
         router.push("/");
       } catch (error) {
         console.log(error);
+        console.log(error.response);
         errorHandler(error.response.data.message || "Sign In with credentials");
       }
 
