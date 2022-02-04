@@ -89,14 +89,14 @@ const Header = () => {
     } else {
       setValue(currentTab.activeIndex);
     }
-  }, [path]);
+  }, [path, routes]);
 
   return (
     <>
       <AppBar position="fixed">
         <Container maxWidth="xl">
           <Toolbar disableGutters>
-            <Grid container sx direction={mdDown ? "column" : "row"}>
+            <Grid container direction={mdDown ? "column" : "row"}>
               <Grid md={7} xl={8} item>
                 <Typography variant={mdDown ? "h5" : "h4"}>
                   Next-Auth

@@ -21,6 +21,7 @@ import AlertSnack from "../components/alert-snack/alert-snack";
 import { AlertContext } from "../context/alert-context";
 import { useRouter } from "next/router";
 import CircularProgress from "@mui/material/CircularProgress";
+import GithubButton from "react-github-login-button";
 
 const validationSchema = Yup.object({
   email: Yup.string().email("Invalid email address").required("Required"),
@@ -162,9 +163,14 @@ function SignIn() {
             <GoogleButton
               onClick={() => {
                 signIn("google");
-                
               }}
               style={{ width: "100%", background: "#1976d2" }}
+            />
+            <GithubButton
+              style={{ width: "100%", marginTop: "1rem" }}
+              onClick={async() =>await signIn("github",{
+                redirect:'false'
+              })}
             />
             <Grid
               container

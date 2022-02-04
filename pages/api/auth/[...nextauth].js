@@ -5,6 +5,7 @@ import clientPromise from "../../../lib/mongodb";
 import { MongoClient } from "mongodb";
 import { compare } from "bcryptjs";
 import Credentials from "next-auth/providers/credentials";
+import GitHubProvider from "next-auth/providers/github";
 
 export default NextAuth({
   adapter: MongoDBAdapter(clientPromise),
@@ -23,6 +24,10 @@ export default NextAuth({
           response_type: "code",
         },
       },
+    }),
+    GitHubProvider({
+      clientId: process.env.GITHUB_CLIENT_ID,
+      clientSecret: process.env.GITHUB_CLIENT_SECRET,
     }),
     Credentials({
       authorize: async (credentials) => {
